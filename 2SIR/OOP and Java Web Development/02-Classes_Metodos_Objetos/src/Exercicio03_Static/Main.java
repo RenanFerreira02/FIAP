@@ -1,4 +1,4 @@
-package Exercicio03;
+package Exercicio03_Static;
 
 import java.text.DecimalFormat;
 import java.util.Scanner;
@@ -36,7 +36,7 @@ public class Main {
         System.out.println("Distância do p2 para a origem: " + df.format(p2.calcularDistanciaAteOrigem()));
 
         // Impressão do ponto mais próximo da origem
-        Ponto aux = p1.maisProximoDaOrigem(p1, p2);
+        Ponto aux = Ponto.maisProximoDaOrigem(p1, p2);
 
         System.out.println("Ponto mais proximo: " + aux.formatarPonto());
 
