@@ -1,6 +1,7 @@
 import static javax.swing.JOptionPane.*;
 import static java.lang.Integer.parseInt;
 import static java.lang.Long.parseLong;
+import static java.lang.Double.parseDouble;
 
 public class Util {
     private Bilhete[] bilhete = new Bilhete[5];
@@ -16,7 +17,6 @@ public class Util {
         aux += "5 - Finalizar\n";
 
         int opc;
-
 
         /*
         String aux = """
@@ -43,6 +43,20 @@ public class Util {
                     case 1:
                         emitirBilhete();
                         break;
+
+                    case 2:
+                        carregaBilhete();
+                        break;
+
+                    case 3:
+                        consultaSaldo();
+                        break;
+
+                    case 4:
+                        passarNaCatraca();
+                        break;
+
+
                 }
             }
 
@@ -52,13 +66,68 @@ public class Util {
     }
 
     public void emitirBilhete() {
-        String nome = showInputDialog("Nome: ");
 
-        long cpf = parseLong(showInputDialog("CPF: "));
+        if (index < bilhete.length) {
+            String nome = showInputDialog("Nome: ");
 
-        String perfil = showInputDialog("Perfil(comum, estudante ou professor): ");
+            long cpf = parseLong(showInputDialog("CPF: "));
 
-        bilhete[index] = new Bilhete(new Usuario(nome, cpf, perfil));
+            String perfil = showInputDialog("Perfil(comum, estudante ou professor): ");
+
+            bilhete[index] = new Bilhete(new Usuario(nome, cpf, perfil));
+
+            index++;
+        } else {
+            showMessageDialog(null, "Bilhete não emitido!");
+        }
+    }
+
+    public int pesquisaCPF() {
+        long cpf = parseLong(showInputDialog("CPF para pesquisa: "));
+
+        for (int i = 0; i < index; i++) {
+            if (bilhete[i].usuario.cpf == cpf) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public void carregaBilhete() {
+        int posicao = pesquisaCPF();
+
+        double valor;
+
+        if (posicao == -1) {
+            showMessageDialog(null, "CPF não encontrado!");
+        } else {
+            valor = parseDouble(showInputDialog("Valor para recarga: "));
+
+            bilhete[posicao].carregar(valor);
+        }
+    }
+
+    public void consultaSaldo() {
+        int posicao = pesquisaCPF();
+
+        if (posicao == -1) {
+            showMessageDialog(null, "CPF não encontrado!");
+        } else {
+            showMessageDialog(null, "Saldo: " + bilhete[posicao].consultarSaldo());
+
+        }
+    }
+
+    public void passarNaCatraca() {
+        int posicao = pesquisaCPF();
+
+        if (posicao == -1) {
+            showMessageDialog(null, "CPF não encontrado!");
+        } else {
+            showMessageDialog(null, bilhete[posicao].passarCatraca());
+        }
 
     }
+
+
 }
