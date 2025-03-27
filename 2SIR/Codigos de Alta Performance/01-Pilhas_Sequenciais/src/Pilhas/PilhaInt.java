@@ -13,12 +13,36 @@ public class PilhaInt {
     }
 
     public void push(int elemento) {
-        dados[topo] = elemento;
-        topo++;
+        if (isFull()) {
+            System.out.println("Stack Overflow");
+        } else {
+            dados[topo] = elemento;
+            topo++;
+        }
     }
 
     public int pop() {
         topo--;
         return dados[topo];
     }
+
+    public boolean isFull() {
+        return (topo == n);
+    }
+
+    public boolean isEmpty() {
+        return (topo == 0);
+    }
+
+    public int top() {
+        return dados[topo - 1];
+    }
+
+    public void esvazia() {
+        while(!isEmpty()) {
+            System.out.print(" " + pop());
+        }
+    }
+
+
 }
