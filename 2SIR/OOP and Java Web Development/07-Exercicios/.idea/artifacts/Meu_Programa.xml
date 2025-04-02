@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="Meu Programa">
+    <output-path>$USER_HOME$/Desktop</output-path>
+    <root id="archive" name="07-Exercicios.jar">
+      <element id="module-output" name="07-Exercicios" />
+    </root>
+  </artifact>
+</component>
