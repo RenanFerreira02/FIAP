@@ -45,7 +45,7 @@ public class Menu {
                         break;
 
                     case 3:
-                        verificaCnpj();
+                        pesquisarCNPJ();
                         break;
                 }
             }
@@ -131,6 +131,18 @@ public class Menu {
             }
         }
 
-        showMessageDialog(null, aux);
+        showMessageDialog(null, "Produto não encontrado");
+    }
+
+    public void pesquisarCNPJ() {
+        Fornecedor fornecedor = verificaCnpj();
+
+        if (fornecedor != null) {
+            String aux = "Nome do produto: " + fornecedor.getNome() + "\n";
+            aux += "CNPJ: " + fornecedor.getCnpj() + "\n";
+
+            showMessageDialog(null, aux);
+        }
+
     }
 }
