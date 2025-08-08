@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/00-Revisao/00-Revisao.iml" filepath="$PROJECT_DIR$/00-Revisao/00-Revisao.iml" />
+      <module fileurl="file://$PROJECT_DIR$/01-Pilhas_Sequenciais/01-Pilhas_Sequenciais.iml" filepath="$PROJECT_DIR$/01-Pilhas_Sequenciais/01-Pilhas_Sequenciais.iml" />
+      <module fileurl="file://$PROJECT_DIR$/02-Filas_Sequenciais/02-Filas_Sequenciais.iml" filepath="$PROJECT_DIR$/02-Filas_Sequenciais/02-Filas_Sequenciais.iml" />
+      <module fileurl="file://$PROJECT_DIR$/03-Alocacao_Dinamica/03-Alocacao_Dinamica.iml" filepath="$PROJECT_DIR$/03-Alocacao_Dinamica/03-Alocacao_Dinamica.iml" />
+      <module fileurl="file://$PROJECT_DIR$/04-Filas_Encadeadas/04-Filas_Encadeadas.iml" filepath="$PROJECT_DIR$/04-Filas_Encadeadas/04-Filas_Encadeadas.iml" />
+      <module fileurl="file://$PROJECT_DIR$/05-Listas_Lineares_Genericas/05-Listas_Lineares_Genericas.iml" filepath="$PROJECT_DIR$/05-Listas_Lineares_Genericas/05-Listas_Lineares_Genericas.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/Codigos de Alta Performance.iml" filepath="$PROJECT_DIR$/.idea/Codigos de Alta Performance.iml" />
+    </modules>
+  </component>
+</project>
