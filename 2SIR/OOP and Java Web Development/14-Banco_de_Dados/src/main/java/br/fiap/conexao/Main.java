@@ -42,6 +42,13 @@ public class Main {
 
         dao.salvar(despesa);
 
+        for (Despesa d : dao.listar()) {
+            System.out.println(d.getDescricao());
+            System.out.println(d.getValor());
+            System.out.println(d.getData());
+
+        }
+
 
 
     }
