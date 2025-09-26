@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+	</head>
+
+	<body>
+		<form th:action="@{/msg}" method="post">
+			<label for="name">Nome:</label>
+
+			<input type="text" id="name" name="nome" placeholder="Digite seu nome" required />
+
+			<button type="submit">Enviar</button>
+		</form>
+
+		<p th:if="${nome != null}">Boa Noite, <strong th:text="${nome}"></strong></p>
+
+		<form th:action="@{/converter}" method="post">
+			<label for="temp">Celsius:</label>
+
+			<input type="text" id="temp" name="temp" placeholder="Digite a temperatura em Celsius" required />
+
+			<button type="submit">Converter</button>
+		</form>
+
+		<p th:if="${temp != null}">Farenheit: <strong th:text="${temp}"></strong></p>
+	</body>
+</html>
