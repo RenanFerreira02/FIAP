@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>Calculadora Spring Boot</h1>
+    <form th:action="@{/calcular}" method="post">
+        <div>
+            <label>Valor 1</label>
+            <input type="text" name="valor1" placeholder="Ex: 12.75" th:value="${valor1}">
+        </div>
+        <div>
+            <label>Valor 2</label>
+            <input type="text" name="valor2" placeholder="Ex: 12.75" th:value="${valor2}">
+        </div>
+        <fieldset>
+            <legend>Escolha uma operação</legend>
+            <label><input type="radio" name="operacao" value="soma" th:checked="${operacao}=='soma'">Somar</label>
+            <label><input type="radio" name="operacao" value="subtracao" th:checked="${operacao}=='subtracao'">Subtração</label>
+            <label><input type="radio" name="operacao" value="multiplicacao" th:checked="${operacao}=='multiplicacao'">Multiplicação</label>
+            <label><input type="radio" name="operacao" value="divisao" th:checked="${operacao}=='divisao'">Divisão</label>
+        </fieldset>
+        <button type="submit">Calcular</button>
+    </form>
+    <p th:text="${resultado}"></p>
+    <p th:text="${erro}"></p>
+</body>
+</html>
