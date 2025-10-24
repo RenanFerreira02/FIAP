@@ -6,6 +6,9 @@ import br.fiap.jpa.web.dto.ClienteDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/cliente")
 public class ClienteController {
@@ -20,5 +23,16 @@ public class ClienteController {
     @ResponseStatus(HttpStatus.CREATED)
     public Cliente cadastrar(@RequestBody ClienteDTO clienteDTO) {
         return service.cadastrar(clienteDTO);
+    }
+
+
+    @GetMapping
+    public List<Cliente> listar() {
+        return service.listar();
+    }
+
+    @GetMapping("/{id}")
+    public Optional<Cliente> listarPorId(@PathVariable Long id) {
+        return service.buscarPorId(id);
     }
 }
