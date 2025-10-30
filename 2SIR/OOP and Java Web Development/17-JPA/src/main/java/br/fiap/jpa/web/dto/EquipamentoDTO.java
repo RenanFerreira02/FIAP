@@ -27,5 +27,4 @@ public class EquipamentoDTO {
     private LocalDate dataCadastro;
 
 
-
 }

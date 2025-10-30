@@ -1,6 +1,7 @@
 package br.fiap.jpa.domain;
 
 import jakarta.persistence.*;
+
 import java.time.LocalDate;
 
 @Entity
@@ -25,10 +26,10 @@ public class Equipamento {
     @Column(name = "tipo", nullable = false, length = 50)
     private String tipo;
 
-    @Column(name = "numero_serie", length = 80)
+    @Column(name = "numero_serie", length = 80, unique = true)
     private String numeroSerie;
 
-    @Column(name = "data_cadastro" ,nullable = false)
+    @Column(name = "data_cadastro", nullable = false)
     private LocalDate dataCadastro;
 
     public Long getId() {

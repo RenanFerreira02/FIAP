@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/equipamento")
 public class EquipamentoController {
 
-    public final EquipamentoService service;
+    private final EquipamentoService service;
 
     public EquipamentoController(EquipamentoService service) {
         this.service = service;
