@@ -44,4 +44,6 @@ public class EquipamentoService {
 
         return equipamentoRepository.save(equipamento);
     }
+
+
 }

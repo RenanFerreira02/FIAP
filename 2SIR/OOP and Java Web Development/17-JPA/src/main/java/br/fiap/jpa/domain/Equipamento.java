@@ -13,7 +13,7 @@ public class Equipamento {
     @Column(name = "id_equip")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_cliente", nullable = false, foreignKey = @ForeignKey(name = "FK_EQUIP_CLIENTE"))
     private Cliente cliente;
 

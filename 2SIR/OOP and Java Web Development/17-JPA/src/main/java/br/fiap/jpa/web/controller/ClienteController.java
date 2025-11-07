@@ -1,8 +1,10 @@
 package br.fiap.jpa.web.controller;
 
 import br.fiap.jpa.domain.Cliente;
+import br.fiap.jpa.domain.Equipamento;
 import br.fiap.jpa.service.ClienteService;
 import br.fiap.jpa.web.dto.ClienteDTO;
+import br.fiap.jpa.web.dto.LoginDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,5 +36,15 @@ public class ClienteController {
     @GetMapping("/{id}")
     public Optional<Cliente> listarPorId(@PathVariable Long id) {
         return service.buscarPorId(id);
+    }
+
+    @GetMapping("/{id}/equipamento")
+    public List<Equipamento> listarEquipamentoPorCliente(@PathVariable Long id) {
+        return service.listarEquipamentoPorCliente(id);
+    }
+
+    @PostMapping("/autenticar")
+    public boolean logar(@RequestBody LoginDTO dto) {
+        return service.autenticar(dto);
     }
 }
