@@ -1,5 +1,6 @@
 package br.com.fiap.recipes
 
+import android.content.res.Configuration
 import android.graphics.Paint.Align
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -21,22 +22,26 @@ import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.materialIcon
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.com.fiap.recipes.ui.theme.RecipesTheme
+import br.com.fiap.recipes.ui.theme.poppinsFamily
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,7 +49,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             RecipesTheme {
-
+                InitialScreen()
             }
         }
     }
@@ -55,6 +60,7 @@ fun InitialScreen() {
     Box(
         modifier = Modifier
             .fillMaxSize()
+            .background(color = MaterialTheme.colorScheme.background)
     ) {
 
         Card(
@@ -65,10 +71,9 @@ fun InitialScreen() {
             shape = RoundedCornerShape(
                 bottomStart = 85.dp
             ),
-            colors = CardDefaults
-                .cardColors(
-                    containerColor = Color(0XFFED1459)
-                )
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.primary
+            )
         ) { }
 
 
@@ -82,75 +87,64 @@ fun InitialScreen() {
             Image(
                 painter = painterResource(R.drawable.cooking),
                 contentDescription = "Imagem de uma mulher cozinhando",
-                modifier = Modifier
-                    .size(190.dp)
+                modifier = Modifier.size(190.dp)
             )
 
             Spacer(
-                modifier = Modifier
-                    .height(100.dp)
+                modifier = Modifier.height(100.dp)
             )
 
             Column(
-                modifier = Modifier
-                    .fillMaxWidth()
+                modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
-                    text = "UNLIMITED PREMIUM RECIPES",
-                    fontSize = 16.sp,
-                    color = Color(0xFF868080),
-                    fontWeight = FontWeight.Bold
+                    text = stringResource(R.string.unlimited_recipes),
+                    color = MaterialTheme.colorScheme.secondary,
+                    style = MaterialTheme.typography.titleSmall
+
                 )
 
                 Text(
-                    text = "Start Cooking",
-                    fontSize = 64.sp,
-                    lineHeight = 64.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color(0XFFED1459),
-                    modifier = Modifier
-                        .padding(top = 8.dp, bottom = 16.dp)
+                    text = stringResource(R.string.app_title),
+                    style = MaterialTheme.typography.displayLarge,
+                    color = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.padding(top = 8.dp, bottom = 16.dp)
                 )
 
-                Row()
-                {
+                Row() {
                     Button(
                         onClick = {},
-                        colors = ButtonDefaults
-                            .buttonColors(
-                                containerColor = Color(0XFFED1459)
-                            ),
-                        border = BorderStroke(width = 1.dp, color = Color(0xFFFFc107)),
-                        modifier = Modifier
-                            .size(width = 128.dp, height = 48.dp)
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.primary
+                        ),
+                        border = BorderStroke(
+                            width = 1.dp,
+                            color = MaterialTheme.colorScheme.tertiary
+                        ),
+                        modifier = Modifier.size(width = 128.dp, height = 48.dp)
                     ) {
                         Text(
-                            text = "Login",
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.Bold
+                            text = stringResource(R.string.button_login),
+                            color = MaterialTheme.colorScheme.onPrimary,
+                            style = MaterialTheme.typography.labelMedium
                         )
                     }
 
                     Spacer(modifier = Modifier.width(8.dp))
 
                     Button(
-                        onClick = {},
-                        colors = ButtonDefaults
-                            .buttonColors(
-                                containerColor = Color(0xFFFFc107)
-                            ),
-                        border = BorderStroke(
-                            width = 1.dp, color = Color(0XFFED1459)
-                        ),
-                        modifier = Modifier
-                            .width(128.dp)
+                        onClick = {}, colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.tertiary
+                        ), border = BorderStroke(
+                            width = 1.dp, color = MaterialTheme.colorScheme.primary
+                        ), modifier = Modifier
+                            //.width(128.dp)
                             .height(48.dp)
                     ) {
                         Text(
-                            text = "Sign up",
-                            color = Color(0XFFED1459),
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.Bold
+                            text = stringResource(R.string.button_signup),
+                            color = MaterialTheme.colorScheme.onTertiary,
+                            style = MaterialTheme.typography.labelMedium
                         )
                     }
                 }
@@ -165,16 +159,15 @@ fun InitialScreen() {
             shape = RoundedCornerShape(
                 topEnd = 85.dp
             ),
-            colors = CardDefaults
-                .cardColors(
-                    containerColor = Color(0XFFED1459)
-                )
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.primary
+            )
         ) { }
     }
 }
 
 @Composable
-@Preview(showBackground = true, showSystemUi = true)
+@Preview(showBackground = true, showSystemUi = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 fun InitialScreenPreview() {
     RecipesTheme { InitialScreen() }
 }
