@@ -5,4 +5,23 @@
     <string name="unlimited_recipes">RECEITAS ESPECIAIS ILIMITADAS</string>
     <string name="button_login">Entrar</string>
     <string name="button_signup">Registrar-se</string>
+    <string name="sign_up">Registrar-se</string>
+    <string name="create_account">Create a new account</string>
+    <string name="user_image">User Image</string>
+    <string name="camera_icon">Camera Icon</string>
+    <string name="your_name">Your Name</string>
+    <string name="person_icon">Person icon</string>
+    <string name="your_email">Your e-mail</string>
+    <string name="your_password">Your password</string>
+    <string name="email_icon">Email Icon</string>
+    <string name="password_icon">Password Icon</string>
+    <string name="show_password">Show Password</string>
+    <string name="login">Login</string>
+    <string name="please_sign_in_to_continue">Please sign in to continue</string>
+    <string name="your_e_mail">Your e-mail</string>
+    <string name="e_mail_icon">E-mail Icon</string>
+    <string name="sign_in">SIGN IN</string>
+    <string name="don_t_have_an_account">Don\'t have an account?</string>
+    <string name="add_button">Add Button</string>
+    <string name="search_by_recipes">Search by recipes</string>
 </resources>
