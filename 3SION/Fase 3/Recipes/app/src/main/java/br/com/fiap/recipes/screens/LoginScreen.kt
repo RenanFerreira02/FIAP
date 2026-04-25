@@ -24,6 +24,10 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -32,11 +36,14 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import br.com.fiap.recipes.R
+import br.com.fiap.recipes.navigation.Destination
 import br.com.fiap.recipes.ui.theme.RecipesTheme
 
 @Composable
-fun LoginScreen(modifier: Modifier = Modifier) {
+fun LoginScreen(navController: NavController) {
 
     Box(
         modifier = Modifier
@@ -59,7 +66,7 @@ fun LoginScreen(modifier: Modifier = Modifier) {
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            LoginForm()
+            LoginForm(navController)
         }
 
         BottoStartCard(
@@ -70,12 +77,11 @@ fun LoginScreen(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun LoginTitle(modifier: Modifier = Modifier) {
+fun LoginTitle() {
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.Start,
-        modifier = Modifier
-            .fillMaxWidth()
+        modifier = Modifier.fillMaxWidth()
     ) {
         Text(
             text = stringResource(R.string.login),
@@ -93,11 +99,22 @@ fun LoginTitle(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun LoginForm(modifier: Modifier = Modifier) {
+fun LoginForm(navController: NavController) {
+
+    var email by remember {
+        mutableStateOf("")
+    }
+
+    var password by remember {
+        mutableStateOf("")
+    }
+
     Column {
         OutlinedTextField(
-            value = "",
-            onValueChange = {},
+            value = email,
+            onValueChange = { emailValue ->
+                email = emailValue
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(4.dp),
@@ -120,14 +137,15 @@ fun LoginForm(modifier: Modifier = Modifier) {
                 )
             },
             keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Email,
-                imeAction = ImeAction.Next
+                keyboardType = KeyboardType.Email, imeAction = ImeAction.Next
             )
         )
 
         OutlinedTextField(
-            value = "",
-            onValueChange = {},
+            value = password,
+            onValueChange = { passwordValue ->
+                password = passwordValue
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(4.dp),
@@ -158,19 +176,18 @@ fun LoginForm(modifier: Modifier = Modifier) {
                 )
             },
             keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Password,
-                imeAction = ImeAction.Done
+                keyboardType = KeyboardType.Password, imeAction = ImeAction.Done
             )
         )
 
         Spacer(modifier = Modifier.height(32.dp))
 
         Button(
-            onClick = {},
-            modifier = Modifier
+            onClick = {
+                navController.navigate(Destination.HomeScreen.createRoute(email))
+            }, modifier = Modifier
                 .fillMaxWidth()
-                .height(48.dp),
-            shape = RoundedCornerShape(8.dp)
+                .height(48.dp), shape = RoundedCornerShape(8.dp)
         ) {
             Text(
                 text = stringResource(R.string.sign_in),
@@ -192,7 +209,9 @@ fun LoginForm(modifier: Modifier = Modifier) {
             )
 
             TextButton(
-                onClick = {},
+                onClick = {
+                    navController.navigate(Destination.SignupScreen.route)
+                },
             ) {
                 Text(
                     text = stringResource(R.string.sign_up),
@@ -209,6 +228,6 @@ fun LoginForm(modifier: Modifier = Modifier) {
 @Composable
 private fun LoginScreenPreview() {
     RecipesTheme {
-        LoginScreen()
+        LoginScreen(rememberNavController())
     }
 }

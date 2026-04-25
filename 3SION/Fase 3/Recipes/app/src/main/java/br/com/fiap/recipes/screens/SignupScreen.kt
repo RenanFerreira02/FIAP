@@ -26,17 +26,23 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import br.com.fiap.recipes.R
+import br.com.fiap.recipes.navigation.Destination
 import br.com.fiap.recipes.ui.theme.RecipesTheme
 
 @Composable
-fun SignupScreen() {
+fun SignupScreen(navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -57,7 +63,7 @@ fun SignupScreen() {
 
             UserImage()
 
-            SignupUserForm()
+            SignupUserForm(navController)
         }
 
         BottoStartCard(modifier = Modifier.align(alignment = Alignment.BottomStart))
@@ -107,7 +113,11 @@ fun UserImage(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun SignupUserForm(modifier: Modifier = Modifier) {
+fun SignupUserForm(navController: NavController) {
+
+    val username by remember {
+        mutableStateOf("")
+    }
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -195,11 +205,11 @@ fun SignupUserForm(modifier: Modifier = Modifier) {
         Spacer(modifier = Modifier.height(32.dp))
 
         Button(
-            onClick = {},
-            modifier = Modifier
+            onClick = {
+                navController.navigate(Destination.LoginScreen.route)
+            }, modifier = Modifier
                 .fillMaxWidth()
-                .height(48.dp),
-            shape = RoundedCornerShape(8.dp)
+                .height(48.dp), shape = RoundedCornerShape(8.dp)
         ) {
             Text(
                 text = stringResource(R.string.create_account),
@@ -213,7 +223,7 @@ fun SignupUserForm(modifier: Modifier = Modifier) {
 @Composable
 private fun SignupScreenPreview() {
     RecipesTheme {
-        SignupScreen()
+        SignupScreen(rememberNavController())
     }
 
 }
@@ -222,7 +232,7 @@ private fun SignupScreenPreview() {
 @Composable
 private fun SignupUserFormPreview() {
     RecipesTheme {
-        SignupUserForm()
+        SignupUserForm(rememberNavController())
     }
 
 }

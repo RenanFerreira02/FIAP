@@ -45,14 +45,20 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import br.com.fiap.recipes.R
 import br.com.fiap.recipes.ui.theme.RecipesTheme
 
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier) {
+fun HomeScreen(email: String?) {
     Surface(modifier = Modifier.fillMaxSize()) {
         Scaffold(
-            topBar = { MyTopAppBar() },
+            topBar = {
+                if (email != null) {
+                    MyTopAppBar(email)
+                }
+            },
 
             bottomBar = { MyBottomAppBar() },
 
@@ -69,7 +75,7 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                 }
             }) { paddingValues ->
             Column(
-                modifier = modifier.padding(paddingValues)
+                modifier = Modifier.padding(paddingValues)
             ) {
                 ContentScreen()
             }
@@ -79,7 +85,7 @@ fun HomeScreen(modifier: Modifier = Modifier) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MyTopAppBar(modifier: Modifier = Modifier) {
+fun MyTopAppBar(email: String?) {
     TopAppBar(
         modifier = Modifier.fillMaxWidth(), title = {
             Row(
@@ -99,7 +105,7 @@ fun MyTopAppBar(modifier: Modifier = Modifier) {
                         fontWeight = FontWeight.Bold
                     )
                     Text(
-                        text = "renan@gmail.com", style = MaterialTheme.typography.displaySmall
+                        text = email!!, style = MaterialTheme.typography.displaySmall
                     )
                 }
                 Card(
@@ -136,9 +142,9 @@ fun ContentScreen(modifier: Modifier = Modifier) {
                 .padding(top = 8.dp),
             shape = RoundedCornerShape(12.dp),
             colors = OutlinedTextFieldDefaults.colors(
-                    unfocusedBorderColor = Color.Transparent,
-                    unfocusedContainerColor = Color(0xFFF5F5F5),
-                ),
+                unfocusedBorderColor = Color.Transparent,
+                unfocusedContainerColor = Color(0xFFF5F5F5),
+            ),
             trailingIcon = {
                 IconButton(
                     onClick = {}) {
@@ -218,9 +224,7 @@ fun MyBottomAppBar(modifier: Modifier = Modifier) {
 @Composable
 private fun HomeScreenPreview() {
     RecipesTheme {
-        HomeScreen(
-
-        )
+        HomeScreen("")
     }
 
 }

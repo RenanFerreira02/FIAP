@@ -25,12 +25,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import br.com.fiap.recipes.R
+import br.com.fiap.recipes.navigation.Destination
 import br.com.fiap.recipes.ui.theme.RecipesTheme
 
 
 @Composable
-fun InitialScreen() {
+fun InitialScreen(navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -75,7 +78,9 @@ fun InitialScreen() {
 
                 Row {
                     Button(
-                        onClick = {}, colors = ButtonDefaults.buttonColors(
+                        onClick = {
+                            navController.navigate(Destination.LoginScreen.route)
+                        }, colors = ButtonDefaults.buttonColors(
                             containerColor = MaterialTheme.colorScheme.primary
                         ), border = BorderStroke(
                             width = 1.dp, color = MaterialTheme.colorScheme.tertiary
@@ -91,7 +96,9 @@ fun InitialScreen() {
                     Spacer(modifier = Modifier.width(8.dp))
 
                     Button(
-                        onClick = {}, colors = ButtonDefaults.buttonColors(
+                        onClick = {
+                            navController.navigate(Destination.SignupScreen.route)
+                        }, colors = ButtonDefaults.buttonColors(
                             containerColor = MaterialTheme.colorScheme.tertiary
                         ), border = BorderStroke(
                             width = 1.dp, color = MaterialTheme.colorScheme.primary
@@ -116,5 +123,5 @@ fun InitialScreen() {
 @Composable
 @Preview(showBackground = true, showSystemUi = true, uiMode = Configuration.UI_MODE_NIGHT_NO)
 fun InitialScreenPreview() {
-    RecipesTheme { InitialScreen() }
+    RecipesTheme { InitialScreen(rememberNavController()) }
 }
