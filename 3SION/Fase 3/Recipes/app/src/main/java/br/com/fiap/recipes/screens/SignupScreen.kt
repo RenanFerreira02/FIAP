@@ -66,7 +66,7 @@ fun SignupScreen(navController: NavController) {
             SignupUserForm(navController)
         }
 
-        BottoStartCard(modifier = Modifier.align(alignment = Alignment.BottomStart))
+        BottomStartCard(modifier = Modifier.align(alignment = Alignment.BottomStart))
 
     }
 }

@@ -116,7 +116,7 @@ fun InitialScreen(navController: NavController) {
             }
         }
 
-        BottoStartCard(modifier = Modifier.align(Alignment.BottomStart))
+        BottomStartCard(modifier = Modifier.align(Alignment.BottomStart))
     }
 }
 

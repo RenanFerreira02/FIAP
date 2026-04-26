@@ -26,7 +26,7 @@ fun TopEndCard(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun BottoStartCard(modifier: Modifier = Modifier) {
+fun BottomStartCard(modifier: Modifier = Modifier) {
 
     Card(
         modifier = modifier

@@ -69,7 +69,7 @@ fun LoginScreen(navController: NavController) {
             LoginForm(navController)
         }
 
-        BottoStartCard(
+        BottomStartCard(
             modifier = Modifier.align(alignment = Alignment.BottomStart)
         )
     }
