@@ -8,7 +8,7 @@ data class Recipe(
     val id: Int = 0,
     val category: Category,
     val user: User,
-    val difficultyLevel: DifficultyLevel,
+    val difficultLevel: DifficultLevel,
     val name: String = "",
     val description: String = "",
     val cookingTime: Int = 0,

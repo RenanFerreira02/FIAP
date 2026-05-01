@@ -2,7 +2,7 @@ package br.com.fiap.recipes.repository
 
 import br.com.fiap.recipes.R
 import br.com.fiap.recipes.model.Category
-import br.com.fiap.recipes.model.DifficultyLevel
+import br.com.fiap.recipes.model.DifficultLevel
 import br.com.fiap.recipes.model.Recipe
 import br.com.fiap.recipes.model.User
 import java.time.LocalDate
@@ -12,7 +12,7 @@ fun getAllRecipes() = listOf<Recipe>(
         id = 1,
         category = Category(id = 6000, name = "Desserts"),
         user = User(id = 100, name = "Ana Maria"),
-        difficultyLevel = DifficultyLevel.BEGINNER,
+        difficultLevel = DifficultLevel.BEGINNER,
         name = "Bolo de Cenoura",
         description = "Moist, spiced, carrot-filled cake with tangy cream cheese frosting.",
         cookingTime = 60,
@@ -23,7 +23,7 @@ fun getAllRecipes() = listOf<Recipe>(
         id = 2,
         category = Category(id = 5000, name = "Vegetables"),
         user = User(id = 200, name = "Pedro Augusto"),
-        difficultyLevel = DifficultyLevel.INTERMEDIATE,
+        difficultLevel = DifficultLevel.INTERMEDIATE,
         name = "Salada de Palmito",
         description = "Refreshing heart of palm salad, light, savory, and subtly sweet.",
         cookingTime = 10,
@@ -32,9 +32,9 @@ fun getAllRecipes() = listOf<Recipe>(
     ),
     Recipe(
         id = 3,
-        category = Category(id = 3000, name = "Bakery"),
+        category = Category(id = 4000, name = "Bakery"),
         user = User(id = 300, name = "Patricia Oliveira"),
-        difficultyLevel = DifficultyLevel.ADVANCED,
+        difficultLevel = DifficultLevel.ADVANCED,
         name = "Pão de calabresa",
         description = "Spicy sausage and cheese bread: soft, savory, delicious.",
         cookingTime = 10,
@@ -45,7 +45,7 @@ fun getAllRecipes() = listOf<Recipe>(
         id = 4,
         category = Category(id = 5000, name = "Vegetables"),
         user = User(id = 400, name = "Mariana Dias"),
-        difficultyLevel = DifficultyLevel.ADVANCED,
+        difficultLevel = DifficultLevel.ADVANCED,
         name = "Sopa de Legumes",
         description = "Hearty vegetable soup: warm, nourishing, fresh, wholesome goodness.",
         cookingTime = 45,
@@ -56,7 +56,7 @@ fun getAllRecipes() = listOf<Recipe>(
         id = 5,
         category = Category(id = 2000, name = "Beef"),
         user = User(id = 500, name = "Carlos Almeida"),
-        difficultyLevel = DifficultyLevel.ADVANCED,
+        difficultLevel = DifficultLevel.ADVANCED,
         name = "Feijoada",
         description = "Rich, smoky, hearty, bean and meat stew.",
         cookingTime = 120,

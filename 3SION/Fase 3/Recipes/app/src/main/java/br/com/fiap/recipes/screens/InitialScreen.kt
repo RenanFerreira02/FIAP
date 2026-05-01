@@ -26,86 +26,89 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import br.com.fiap.recipes.R
 import br.com.fiap.recipes.navigation.Destination
 import br.com.fiap.recipes.ui.theme.RecipesTheme
 
-
 @Composable
-fun InitialScreen(navController: NavController) {
+fun InitialScreen(navController: NavController?) {
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(color = MaterialTheme.colorScheme.background)
     ) {
-
-        TopEndCard(modifier = Modifier.align(Alignment.TopEnd))
-
+        TopEndCard(Modifier.align(Alignment.TopEnd))
         Column(
             modifier = Modifier
-                .padding(16.dp)
                 .fillMaxWidth()
+                .padding(horizontal = 48.dp, vertical = 16.dp)
                 .align(Alignment.Center),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Image(
                 painter = painterResource(R.drawable.cooking),
-                contentDescription = "Imagem de uma mulher cozinhando",
+                contentDescription = "Image of someone cooking",
                 modifier = Modifier.size(190.dp)
             )
-
-            Spacer(
-                modifier = Modifier.height(100.dp)
-            )
-
+            Spacer(modifier = Modifier.height(100.dp))
             Column(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
             ) {
                 Text(
                     text = stringResource(R.string.unlimited_recipes),
                     color = MaterialTheme.colorScheme.secondary,
                     style = MaterialTheme.typography.titleSmall
-
                 )
-
+                Spacer(modifier = Modifier.height(8.dp))
+                // TEXTO START COOKING
                 Text(
                     text = stringResource(R.string.app_title),
-                    style = MaterialTheme.typography.displayLarge,
                     color = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.padding(top = 8.dp, bottom = 16.dp)
+                    style = MaterialTheme.typography.displayLarge
                 )
-
+                Spacer(modifier = Modifier.height(16.dp))
                 Row {
+                    // Botão Login
                     Button(
                         onClick = {
-                            navController.navigate(Destination.LoginScreen.route)
-                        }, colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.primary
-                        ), border = BorderStroke(
-                            width = 1.dp, color = MaterialTheme.colorScheme.tertiary
-                        ), modifier = Modifier.size(width = 128.dp, height = 48.dp)
+                            navController?.navigate(Destination.LoginScreen.route)
+                        },
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme
+                                .colorScheme.primary
+                        ),
+                        border = BorderStroke(
+                            width = 1.dp,
+                            color = MaterialTheme
+                                .colorScheme.tertiary
+                        ),
+                        modifier = Modifier
+                            .height(48.dp)
                     ) {
+                        // TEXTO DO BOTÃO DE LOGIN
                         Text(
                             text = stringResource(R.string.button_login),
                             color = MaterialTheme.colorScheme.onPrimary,
                             style = MaterialTheme.typography.labelMedium
                         )
                     }
-
                     Spacer(modifier = Modifier.width(8.dp))
-
                     Button(
                         onClick = {
-                            navController.navigate(Destination.SignupScreen.route)
-                        }, colors = ButtonDefaults.buttonColors(
+                            navController?.navigate(Destination.SignupScreen.route)
+                        },
+                        colors = ButtonDefaults.buttonColors(
                             containerColor = MaterialTheme.colorScheme.tertiary
-                        ), border = BorderStroke(
-                            width = 1.dp, color = MaterialTheme.colorScheme.primary
-                        ), modifier = Modifier
-                            //.width(128.dp)
-                            .height(48.dp)
+                        ),
+                        border = BorderStroke(
+                            width = 1.dp,
+                            color = MaterialTheme.colorScheme.primary
+                        ),
+                        modifier = Modifier
+                            .height(height = 48.dp)
                     ) {
+                        // TEXTO DO BOTÃO SIGN UP
                         Text(
                             text = stringResource(R.string.button_signup),
                             color = MaterialTheme.colorScheme.onTertiary,
@@ -115,13 +118,18 @@ fun InitialScreen(navController: NavController) {
                 }
             }
         }
-
-        BottomStartCard(modifier = Modifier.align(Alignment.BottomStart))
+        BottomStartCard(Modifier.align(Alignment.BottomStart))
     }
 }
 
+@Preview(
+    showBackground = true,
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    locale = "en"
+)
 @Composable
-@Preview(showBackground = true, showSystemUi = true, uiMode = Configuration.UI_MODE_NIGHT_NO)
 fun InitialScreenPreview() {
-    RecipesTheme { InitialScreen(rememberNavController()) }
+    RecipesTheme {
+        InitialScreen(null)
+    }
 }

@@ -40,7 +40,8 @@ fun RecipeItem(recipe: Recipe) {
             .height(170.dp)
     ) {
         Box(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
         ) {
             Image(
                 painter = painterResource(recipe.image!!),

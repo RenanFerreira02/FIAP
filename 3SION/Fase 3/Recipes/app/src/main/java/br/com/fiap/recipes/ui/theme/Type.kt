@@ -13,7 +13,7 @@ import br.com.fiap.recipes.R
 // FONTE POPPINS
 val poppinsFamily = FontFamily(
     Font(R.font.poppins_regular, FontWeight.Normal),
-    Font(R.font.poppins_semibold, FontWeight.SemiBold),
+    Font(R.font.poppins_semi_bold, FontWeight.SemiBold),
     Font(R.font.poppins_bold, FontWeight.Bold)
 )
 
@@ -29,7 +29,7 @@ val Typography = Typography(
     bodySmall = TextStyle(
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Normal,
-        fontSize = 14.sp,
+        fontSize = 12.sp,
         lineHeight = 24.sp,
         letterSpacing = 0.5.sp
     ),

@@ -1,5 +1,6 @@
 package br.com.fiap.recipes.screens
 
+import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -10,36 +11,44 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Error
 import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.Mail
 import androidx.compose.material.icons.filled.RemoveRedEye
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import br.com.fiap.recipes.R
 import br.com.fiap.recipes.navigation.Destination
+import br.com.fiap.recipes.repository.RoomUserRepository
+import br.com.fiap.recipes.repository.SharedPreferencesUserRepository
+import br.com.fiap.recipes.repository.UserRepository
 import br.com.fiap.recipes.ui.theme.RecipesTheme
 
 @Composable
@@ -50,79 +59,113 @@ fun LoginScreen(navController: NavController) {
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
     ) {
-        TopEndCard(
-            modifier = Modifier.align(alignment = Alignment.TopEnd)
-        )
+        TopEndCard(modifier = Modifier.align(Alignment.TopEnd))
+        BottomStartCard(modifier = Modifier.align(Alignment.BottomStart))
 
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .align(alignment = Alignment.Center)
-                .padding(32.dp),
+                .align(Alignment.Center),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             LoginTitle()
-
-            Spacer(modifier = Modifier.height(32.dp))
-
             LoginForm(navController)
         }
 
-        BottomStartCard(
-            modifier = Modifier.align(alignment = Alignment.BottomStart)
-        )
     }
-
 }
 
+@Preview(
+    showBackground = true,
+    uiMode = Configuration.UI_MODE_NIGHT_NO,
+    locale = "en"
+)
 @Composable
-fun LoginTitle() {
+private fun LoginScreenPreview() {
+    RecipesTheme {
+        //LoginScreen({})
+        //LoginScreen()
+    }
+}
+
+// *** Componente 1 - Título da tela ***
+@Composable
+fun LoginTitle(modifier: Modifier = Modifier) {
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.Start,
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(32.dp)
     ) {
         Text(
             text = stringResource(R.string.login),
             color = MaterialTheme.colorScheme.primary,
             style = MaterialTheme.typography.titleLarge
         )
-
         Text(
             text = stringResource(R.string.please_sign_in_to_continue),
             color = MaterialTheme.colorScheme.primary,
             style = MaterialTheme.typography.titleSmall
-
         )
     }
 }
 
+@Preview(
+    showBackground = true,
+    uiMode = Configuration.UI_MODE_NIGHT_NO,
+    locale = "en"
+)
+@Composable
+private fun LoginTitlePreview() {
+    RecipesTheme {
+        LoginTitle()
+    }
+}
+
+// *** Componente 2 - Formulário de Login do Usuário
 @Composable
 fun LoginForm(navController: NavController) {
 
-    var email by remember {
+    var emailState = remember {
         mutableStateOf("")
     }
-
-    var password by remember {
+    var passwordState = remember {
         mutableStateOf("")
     }
+    var showPassword = remember {
+        mutableStateOf(false)
+    }
+    var authenticateError = remember {
+        mutableStateOf(false)
+    }
 
-    Column {
+    // Criar uma instância da classe SharedPreferencesUserRepository
+    // val userRepository: UserRepository = SharedPreferencesUserRepository(LocalContext.current)
+    // Criar uma instância da classe RoomUserRepository
+    val userRepository: UserRepository = RoomUserRepository(LocalContext.current)
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(32.dp)
+    ) {
+        // Caixa de texto your e-mail
         OutlinedTextField(
-            value = email,
-            onValueChange = { emailValue ->
-                email = emailValue
+            value = emailState.value,
+            onValueChange = { email ->
+                emailState.value = email
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(4.dp),
+                .padding(bottom = 4.dp),
             shape = RoundedCornerShape(16.dp),
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = MaterialTheme.colorScheme.primary,
-                unfocusedBorderColor = MaterialTheme.colorScheme.primary
-            ),
+            colors = OutlinedTextFieldDefaults
+                .colors(
+                    focusedBorderColor = MaterialTheme.colorScheme.primary,
+                    unfocusedBorderColor = MaterialTheme.colorScheme.primary
+                ),
             label = {
                 Text(
                     text = stringResource(R.string.your_e_mail),
@@ -131,29 +174,30 @@ fun LoginForm(navController: NavController) {
             },
             leadingIcon = {
                 Icon(
-                    imageVector = Icons.Default.Mail,
-                    contentDescription = stringResource(R.string.e_mail_icon),
+                    imageVector = Icons.Default.Email,
+                    contentDescription = "",
                     tint = MaterialTheme.colorScheme.tertiary
                 )
             },
             keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Email, imeAction = ImeAction.Next
+                keyboardType = KeyboardType.Email,
+                imeAction = ImeAction.Next
             )
         )
-
+        // Caixa de texto your password
         OutlinedTextField(
-            value = password,
-            onValueChange = { passwordValue ->
-                password = passwordValue
+            value = passwordState.value,
+            onValueChange = { password ->
+                passwordState.value = password
             },
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(4.dp),
+                .fillMaxWidth(),
             shape = RoundedCornerShape(16.dp),
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = MaterialTheme.colorScheme.primary,
-                unfocusedBorderColor = MaterialTheme.colorScheme.primary
-            ),
+            colors = OutlinedTextFieldDefaults
+                .colors(
+                    focusedBorderColor = MaterialTheme.colorScheme.primary,
+                    unfocusedBorderColor = MaterialTheme.colorScheme.primary
+                ),
             label = {
                 Text(
                     text = stringResource(R.string.your_password),
@@ -163,55 +207,87 @@ fun LoginForm(navController: NavController) {
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Default.Lock,
-                    contentDescription = stringResource(R.string.password_icon),
+                    contentDescription = "",
                     tint = MaterialTheme.colorScheme.tertiary
                 )
             },
-
             trailingIcon = {
-                Icon(
-                    imageVector = Icons.Default.RemoveRedEye,
-                    contentDescription = stringResource(R.string.show_password),
-                    tint = MaterialTheme.colorScheme.tertiary
-                )
+                val image = if (showPassword.value) {
+                    Icons.Default.Visibility
+                } else {
+                    Icons.Default.VisibilityOff
+                }
+                IconButton(
+                    onClick = {showPassword.value = !showPassword.value}
+                ) {
+                    Icon(
+                        imageVector = image,
+                        contentDescription = "",
+                        tint = MaterialTheme.colorScheme.tertiary
+                    )
+                }
             },
             keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Password, imeAction = ImeAction.Done
-            )
+                keyboardType = KeyboardType.NumberPassword,
+                imeAction = ImeAction.Done
+            ),
+            visualTransformation = if (showPassword.value) VisualTransformation.None
+            else PasswordVisualTransformation()
         )
-
+        // Botão Sign in
         Spacer(modifier = Modifier.height(32.dp))
-
         Button(
             onClick = {
-                navController.navigate(Destination.HomeScreen.createRoute(email))
-            }, modifier = Modifier
+                val authenticate =
+                    userRepository.login(emailState.value, passwordState.value)
+                if (authenticate) {
+                    navController.navigate(
+                        Destination.HomeScreen.createRoute(emailState.value)
+                    )
+                } else {
+                    authenticateError.value = true
+                }
+            },
+            modifier = Modifier
                 .fillMaxWidth()
-                .height(48.dp), shape = RoundedCornerShape(8.dp)
+                .height(48.dp),
+            shape = RoundedCornerShape(8.dp)
         ) {
             Text(
                 text = stringResource(R.string.sign_in),
                 style = MaterialTheme.typography.labelMedium
             )
         }
-
         Spacer(modifier = Modifier.height(16.dp))
-
+        if (authenticateError.value){
+            Row {
+                Icon(
+                    imageVector = Icons.Default.Error,
+                    contentDescription = "",
+                    tint = MaterialTheme.colorScheme.error
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = stringResource(R.string.authentication_error),
+                    color = MaterialTheme.colorScheme.error
+                )
+            }
+        }
+        Spacer(modifier = Modifier.height(16.dp))
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.End
+            horizontalArrangement = Arrangement.Absolute.Right
         ) {
             Text(
                 text = stringResource(R.string.don_t_have_an_account),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.primary
             )
-
             TextButton(
                 onClick = {
                     navController.navigate(Destination.SignupScreen.route)
-                },
+                }
             ) {
                 Text(
                     text = stringResource(R.string.sign_up),
@@ -223,11 +299,14 @@ fun LoginForm(navController: NavController) {
     }
 }
 
-
-@Preview(showBackground = true)
+@Preview(
+    showBackground = true,
+    uiMode = Configuration.UI_MODE_NIGHT_NO,
+    locale = "en"
+)
 @Composable
-private fun LoginScreenPreview() {
+private fun LoginFormPreview() {
     RecipesTheme {
-        LoginScreen(rememberNavController())
+        //LoginForm({})
     }
 }

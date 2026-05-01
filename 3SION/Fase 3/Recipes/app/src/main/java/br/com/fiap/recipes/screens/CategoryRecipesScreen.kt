@@ -233,7 +233,7 @@ fun CategoryRecipe(recipe: Recipe) {
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            text = recipe.difficultyLevel.description,
+                            text = recipe.difficultLevel.description,
                             style = MaterialTheme.typography.labelSmall
                         )
                     }

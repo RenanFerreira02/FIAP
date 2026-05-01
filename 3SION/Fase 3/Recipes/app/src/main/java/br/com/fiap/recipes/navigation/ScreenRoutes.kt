@@ -4,19 +4,24 @@ sealed class Destination(val route: String){
     object InitialScreen: Destination("initial")
     object SignupScreen: Destination("signup")
 
+    //object ProfileScreen: Destination("profile")
+    object ProfileScreen: Destination("profile/{email}"){
+        fun createRoute(email: String): String{
+            return "profile/$email"
+        }
+    }
+
     object HomeScreen: Destination("home/{email}"){
         fun createRoute(email: String): String {
             return "home/$email"
         }
     }
 
-    // TRECHO DE CÓDIGO OMITIDO
     object CategoryRecipeScreen: Destination("categoryRecipes/{id}"){
-        fun createRoute(categoryId: Int): String {
-            return "categoryRecipes/$categoryId"
+        fun createRoute(id: Int): String {
+            return "categoryRecipes/$id"
         }
     }
-    // TRECHO DE CÓDIGO OMITIDO
 
     object LoginScreen: Destination("login")
 }
