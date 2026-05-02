@@ -44,7 +44,7 @@ fun MapScreen(
     Scaffold(
         topBar = { OmniTopBar(title = "Olá, Renata") },
         bottomBar = { OmniBottomNav(navController = navController) },
-        floatingActionButton = { OmniFab(onClick = { navController.navigate(Destination.CreateMissionScreen.createRoute(1)) }) },
+        floatingActionButton = { OmniFab(onClick = { navController.navigate(Destination.CreateMissionScreen.route) }) },
         containerColor = Paper,
     ) { paddingValues ->
         BoxWithConstraints(

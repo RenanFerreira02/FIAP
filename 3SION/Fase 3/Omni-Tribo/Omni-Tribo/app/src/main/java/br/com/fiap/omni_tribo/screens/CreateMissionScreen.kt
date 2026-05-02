@@ -24,6 +24,7 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -35,16 +36,18 @@ import androidx.navigation.NavController
 import br.com.fiap.omni_tribo.R
 import br.com.fiap.omni_tribo.components.OmniTopBar
 import br.com.fiap.omni_tribo.repository.AddressRepository
+import br.com.fiap.omni_tribo.repository.MissionsRepository
 import br.com.fiap.omni_tribo.ui.theme.*
 import kotlinx.coroutines.launch
 
 @Composable
 fun CreateMissionScreen(
-    step: Int = 1,
     navController: NavController,
     onBack: () -> Unit,
-    onNext: () -> Unit,
+    onPublish: () -> Unit,
 ) {
+    var step by remember { mutableStateOf(1) }
+    var selectedTag by remember { mutableStateOf("Entrega") }
     var title by remember { mutableStateOf("") }
     var originCep by remember { mutableStateOf("") }
     var originAddress by remember { mutableStateOf("") }
@@ -55,7 +58,9 @@ fun CreateMissionScreen(
     var destinationError by remember { mutableStateOf("") }
     var isLoadingDestination by remember { mutableStateOf(false) }
 
-    val repository = AddressRepository()
+    val context = LocalContext.current
+    val missionsRepository = remember { MissionsRepository(context) }
+    val addressRepository = AddressRepository()
     val scope = rememberCoroutineScope()
 
     val lookupOriginCep: () -> Unit = {
@@ -65,7 +70,7 @@ fun CreateMissionScreen(
         } else {
             scope.launch {
                 isLoadingOrigin = true; originAddress = ""; originError = ""
-                val result = repository.getAddress(digits)
+                val result = addressRepository.getAddress(digits)
                 isLoadingOrigin = false
                 if (result != null) originAddress = result.fullAddress()
                 else originError = "CEP não encontrado. Verifique e tente novamente."
@@ -80,7 +85,7 @@ fun CreateMissionScreen(
         } else {
             scope.launch {
                 isLoadingDestination = true; destinationAddress = ""; destinationError = ""
-                val result = repository.getAddress(digits)
+                val result = addressRepository.getAddress(digits)
                 isLoadingDestination = false
                 if (result != null) destinationAddress = result.fullAddress()
                 else destinationError = "CEP não encontrado. Verifique e tente novamente."
@@ -89,7 +94,12 @@ fun CreateMissionScreen(
     }
 
     Scaffold(
-        topBar = { OmniTopBar(title = stringResource(R.string.new_mission), onBack = onBack) },
+        topBar = {
+            OmniTopBar(
+                title = stringResource(R.string.new_mission),
+                onBack = if (step == 1) onBack else { { step = 1 } },
+            )
+        },
         containerColor = Paper,
     ) { paddingValues ->
         Column(
@@ -125,7 +135,7 @@ fun CreateMissionScreen(
                     .padding(16.dp)
             ) {
                 if (step == 1) {
-                    Step1Content()
+                    Step1Content(selectedTag = selectedTag, onTagSelected = { selectedTag = it })
                 } else {
                     Step2Content(
                         title = title,
@@ -163,7 +173,7 @@ fun CreateMissionScreen(
                         .height(48.dp)
                         .background(Color.White, RoundedCornerShape(14.dp))
                         .border(1.5.dp, Line, RoundedCornerShape(14.dp))
-                        .clickable { onBack() },
+                        .clickable { if (step == 1) onBack() else step = 1 },
                     contentAlignment = Alignment.Center,
                 ) {
                     Text(stringResource(R.string.voltar), color = Ink70, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
@@ -173,7 +183,26 @@ fun CreateMissionScreen(
                         .weight(1f)
                         .height(48.dp)
                         .background(GreenPrimary, RoundedCornerShape(14.dp))
-                        .clickable { onNext() },
+                        .clickable {
+                            if (step == 1) {
+                                step = 2
+                            } else {
+                                val subtitle = buildString {
+                                    if (originAddress.isNotEmpty()) append(originAddress)
+                                    if (originAddress.isNotEmpty() && destinationAddress.isNotEmpty()) append(" → ")
+                                    if (destinationAddress.isNotEmpty()) append(destinationAddress)
+                                }.ifBlank { "—" }
+                                missionsRepository.addMission(
+                                    tag = selectedTag,
+                                    title = title.ifBlank { "Nova missão" },
+                                    subtitle = subtitle,
+                                    xp = 320,
+                                    brl = "22",
+                                    time = "—",
+                                )
+                                onPublish()
+                            }
+                        },
                     contentAlignment = Alignment.Center,
                 ) {
                     val buttonText = if (step == 1) stringResource(R.string.continuar) else stringResource(R.string.publicar_missao)
@@ -184,21 +213,21 @@ fun CreateMissionScreen(
     }
 }
 
+private data class Category(val icon: ImageVector, val label: String, val sub: String, val tag: String)
+
+private val categories = listOf(
+    Category(Icons.Outlined.TrackChanges, "Entrega", "Levar algo a alguém", "Entrega"),
+    Category(Icons.Outlined.Inventory, "Coleta", "Recolher materiais", "Coleta"),
+    Category(Icons.Outlined.Groups, "Mutirão", "Ação coletiva da tribo", "Tribo"),
+    Category(Icons.Outlined.Bolt, "Ajuda", "Assistência pontual", "Ajuda"),
+)
+
 @Composable
-private fun Step1Content() {
+private fun Step1Content(selectedTag: String, onTagSelected: (String) -> Unit) {
     Text(stringResource(R.string.step1_title), color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold)
     Spacer(modifier = Modifier.height(4.dp))
     Text(stringResource(R.string.step1_subtitle), color = Ink70, fontSize = 13.sp)
     Spacer(modifier = Modifier.height(16.dp))
-
-    data class Category(val icon: ImageVector, val label: String, val sub: String, val selected: Boolean)
-
-    val categories = listOf(
-        Category(Icons.Outlined.TrackChanges, stringResource(R.string.cat_entrega_label), stringResource(R.string.cat_entrega_sub), true),
-        Category(Icons.Outlined.Inventory, stringResource(R.string.cat_coleta_label), stringResource(R.string.cat_coleta_sub), false),
-        Category(Icons.Outlined.Groups, stringResource(R.string.cat_mutirao_label), stringResource(R.string.cat_mutirao_sub), false),
-        Category(Icons.Outlined.Bolt, stringResource(R.string.cat_ajuda_label), stringResource(R.string.cat_ajuda_sub), false),
-    )
 
     categories.chunked(2).forEach { row ->
         Row(
@@ -206,20 +235,22 @@ private fun Step1Content() {
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             row.forEach { cat ->
+                val selected = cat.tag == selectedTag
                 Column(
                     modifier = Modifier
                         .weight(1f)
                         .height(110.dp)
-                        .background(if (cat.selected) GreenLight else Color.White, RoundedCornerShape(14.dp))
-                        .border(1.5.dp, if (cat.selected) GreenPrimary else Line, RoundedCornerShape(14.dp))
+                        .background(if (selected) GreenLight else Color.White, RoundedCornerShape(14.dp))
+                        .border(1.5.dp, if (selected) GreenPrimary else Line, RoundedCornerShape(14.dp))
+                        .clickable { onTagSelected(cat.tag) }
                         .padding(14.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
                     Box(
-                        modifier = Modifier.size(36.dp).background(if (cat.selected) GreenPrimary else GreenLight, RoundedCornerShape(10.dp)),
+                        modifier = Modifier.size(36.dp).background(if (selected) GreenPrimary else GreenLight, RoundedCornerShape(10.dp)),
                         contentAlignment = Alignment.Center,
                     ) {
-                        Icon(cat.icon, null, tint = if (cat.selected) Color.White else GreenPrimary, modifier = Modifier.size(20.dp))
+                        Icon(cat.icon, null, tint = if (selected) Color.White else GreenPrimary, modifier = Modifier.size(20.dp))
                     }
                     Column {
                         Text(cat.label, color = Ink, fontSize = 14.sp, fontWeight = FontWeight.Bold)

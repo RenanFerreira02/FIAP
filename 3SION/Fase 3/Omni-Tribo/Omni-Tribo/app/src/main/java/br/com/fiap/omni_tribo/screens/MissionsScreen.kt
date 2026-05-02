@@ -11,6 +11,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -18,12 +21,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import br.com.fiap.omni_tribo.components.*
 import br.com.fiap.omni_tribo.model.Mission
 import br.com.fiap.omni_tribo.navigation.Destination
-import br.com.fiap.omni_tribo.repository.getAllMissions
+import br.com.fiap.omni_tribo.repository.MissionsRepository
 import br.com.fiap.omni_tribo.ui.theme.*
 
 @Composable
@@ -31,7 +35,9 @@ fun MissionsScreen(
     navController: NavController,
     onMissionClick: (Int) -> Unit = {},
 ) {
-    val missions = getAllMissions()
+    val context = LocalContext.current
+    val missionsRepository = remember { MissionsRepository(context) }
+    val missions by missionsRepository.missionsFlow.collectAsState(initial = emptyList())
     val available = missions.filter { !it.completed }
     val completed = missions.filter { it.completed }
     val tabs = listOf("Disponíveis · ${available.size}", "Em andamento · 2", "Concluídas · ${completed.size}")
@@ -39,7 +45,7 @@ fun MissionsScreen(
     Scaffold(
         topBar = { OmniTopBar(title = "Missões") },
         bottomBar = { OmniBottomNav(navController = navController) },
-        floatingActionButton = { OmniFab(onClick = { navController.navigate(Destination.CreateMissionScreen.createRoute(1)) }) },
+        floatingActionButton = { OmniFab(onClick = { navController.navigate(Destination.CreateMissionScreen.route) }) },
         containerColor = Paper,
     ) { paddingValues ->
         Column(

@@ -11,6 +11,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -26,6 +29,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import androidx.compose.ui.platform.LocalContext
 import br.com.fiap.omni_tribo.components.*
+import br.com.fiap.omni_tribo.model.UserProfile
 import br.com.fiap.omni_tribo.navigation.Destination
 import br.com.fiap.omni_tribo.repository.UserRepository
 import br.com.fiap.omni_tribo.ui.theme.*
@@ -45,14 +49,15 @@ private val transactions = listOf(
 fun WalletScreen(
     navController: NavController,
 ) {
-    val userRepository = UserRepository(LocalContext.current)
-    val profile = userRepository.getProfile()
+    val context = LocalContext.current
+    val userRepository = remember { UserRepository(context) }
+    val profile by userRepository.profileFlow.collectAsState(initial = UserProfile())
     val xpProgress = profile.xp.toFloat() / profile.xpThreshold.toFloat()
 
     Scaffold(
         topBar = { OmniTopBar(title = "Carteira") },
         bottomBar = { OmniBottomNav(navController = navController) },
-        floatingActionButton = { OmniFab(onClick = { navController.navigate(Destination.CreateMissionScreen.createRoute(1)) }) },
+        floatingActionButton = { OmniFab(onClick = { navController.navigate(Destination.CreateMissionScreen.route) }) },
         containerColor = Paper,
     ) { paddingValues ->
         Column(

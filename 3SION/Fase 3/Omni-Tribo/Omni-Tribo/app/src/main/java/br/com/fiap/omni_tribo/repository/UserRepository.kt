@@ -3,14 +3,22 @@ package br.com.fiap.omni_tribo.repository
 import android.content.Context
 import br.com.fiap.omni_tribo.dao.OmniDatabase
 import br.com.fiap.omni_tribo.model.UserProfile
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class UserRepository(context: Context) {
 
     private val dao = OmniDatabase.getDatabase(context).userDao()
 
-    fun getProfile(): UserProfile {
-        return dao.getProfile() ?: UserProfile().also { dao.saveProfile(it) }
+    init {
+        if (dao.getProfile() == null) {
+            dao.saveProfile(UserProfile())
+        }
     }
+
+    val profileFlow: Flow<UserProfile> = dao.getProfileFlow().map { it ?: UserProfile() }
+
+    fun getProfile(): UserProfile = dao.getProfile() ?: UserProfile()
 
     fun completeMission(xp: Int, brlStr: String) {
         val current = getProfile()

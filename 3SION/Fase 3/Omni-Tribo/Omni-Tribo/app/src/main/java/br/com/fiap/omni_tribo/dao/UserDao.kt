@@ -6,9 +6,13 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import br.com.fiap.omni_tribo.model.UserProfile
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface UserDao {
+
+    @Query("SELECT * FROM tb_user_profile WHERE id = 1")
+    fun getProfileFlow(): Flow<UserProfile?>
 
     @Query("SELECT * FROM tb_user_profile WHERE id = 1")
     fun getProfile(): UserProfile?

@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+
 import br.com.fiap.omni_tribo.screens.CreateMissionScreen
 import br.com.fiap.omni_tribo.screens.MapScreen
 import br.com.fiap.omni_tribo.screens.MissionDetailScreen
@@ -72,26 +73,13 @@ fun NavigationRoutes() {
             )
         }
 
-        composable(
-            route = Destination.CreateMissionScreen.route,
-            arguments = listOf(navArgument("step") { type = NavType.IntType }),
-        ) { backStackEntry ->
-            val step = backStackEntry.arguments?.getInt("step") ?: 1
+        composable(Destination.CreateMissionScreen.route) {
             CreateMissionScreen(
-                step = step,
                 navController = navController,
-                onBack = {
-                    if (!navController.popBackStack()) {
-                        navController.navigate(Destination.MissionsScreen.route)
-                    }
-                },
-                onNext = {
-                    if (step < 2) {
-                        navController.navigate(Destination.CreateMissionScreen.createRoute(2))
-                    } else {
-                        navController.navigate(Destination.MissionsScreen.route) {
-                            popUpTo(Destination.MapScreen.route) { inclusive = false }
-                        }
+                onBack = { navController.popBackStack() },
+                onPublish = {
+                    navController.navigate(Destination.MissionsScreen.route) {
+                        popUpTo(Destination.MapScreen.route) { inclusive = false }
                     }
                 },
             )

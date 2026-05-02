@@ -11,7 +11,5 @@ sealed class Destination(val route: String) {
         fun createRoute(missionId: Int) = "mission_detail/$missionId"
     }
 
-    object CreateMissionScreen : Destination("create_mission/{step}") {
-        fun createRoute(step: Int = 1) = "create_mission/$step"
-    }
+    object CreateMissionScreen : Destination("create_mission")
 }

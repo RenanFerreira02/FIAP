@@ -29,8 +29,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import br.com.fiap.omni_tribo.components.*
+import br.com.fiap.omni_tribo.repository.MissionsRepository
 import br.com.fiap.omni_tribo.repository.UserRepository
-import br.com.fiap.omni_tribo.repository.getMissionById
 import br.com.fiap.omni_tribo.ui.theme.*
 
 @Composable
@@ -38,8 +38,10 @@ fun MissionDetailScreen(
     missionId: Int = 1,
     navController: NavController,
 ) {
-    val mission = getMissionById(missionId)
-    val userRepository = UserRepository(LocalContext.current)
+    val context = LocalContext.current
+    val userRepository = remember { UserRepository(context) }
+    val missionsRepository = remember { MissionsRepository(context) }
+    val mission = remember { missionsRepository.getMissionById(missionId) }
 
     var alreadyDone by remember { mutableStateOf(mission?.completed == true) }
 
@@ -163,6 +165,7 @@ fun MissionDetailScreen(
                         .clickable(enabled = !alreadyDone) {
                             if (mission != null) {
                                 userRepository.completeMission(mission.xp, mission.brl)
+                                missionsRepository.markCompleted(mission.id)
                                 alreadyDone = true
                                 navController.popBackStack()
                             }
